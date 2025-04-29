@@ -8,4 +8,3 @@
 
 <h1>{data.snip.title}</h1>
 <Debug />
-<!-- render component from content -->

@@ -143,10 +143,15 @@
 
 	<div class="export">
 		<h3>GLSL Code</h3>
-		<pre>vec3 a = vec3({a.map((n) => n.toFixed(2)).join(', ')});
-vec3 b = vec3({b.map((n) => n.toFixed(2)).join(', ')});
-vec3 c = vec3({c.map((n) => n.toFixed(2)).join(', ')});
-vec3 d = vec3({d.map((n) => n.toFixed(2)).join(', ')});</pre>
+		<pre>
+float p1_example = uv.x;			
+vec3 cp1 = c_palette(
+	p1_example,
+	vec3({a.map((n) => n.toFixed(2)).join(', ')}),
+	vec3({b.map((n) => n.toFixed(2)).join(', ')}),
+	vec3({c.map((n) => n.toFixed(2)).join(', ')}),
+	vec3({d.map((n) => n.toFixed(2)).join(', ')})
+);</pre>
 	</div>
 
 	<div class="controls">
