@@ -36,6 +36,9 @@
 {/snippet}
 
 <main>
+	<nav>
+		<a href="/glsl/c_palette">c palette</a>
+	</nav>
 	<h1>File Explorer</h1>
 	{@render mainFolder()}
 </main>
