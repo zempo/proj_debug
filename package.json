@@ -31,5 +31,9 @@
 		"onlyBuiltDependencies": [
 			"esbuild"
 		]
+	},
+	"dependencies": {
+		"svelte-preprocess": "^6.0.3",
+		"vite-plugin-glsl": "^1.4.1"
 	}
 }
