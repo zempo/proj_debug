@@ -1,0 +1,150 @@
+@use 'sass:map';
+
+@font-face {
+	font-family: 'Crimson Pro Variable';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 200 900;
+	src: url(@fontsource-variable/crimson-pro/files/crimson-pro-latin-wght-normal.woff2)
+		format('woff2-variations');
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* nunito-latin-wght-normal */
+@font-face {
+	font-family: 'Nunito Variable';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 200 1000;
+	src: url(@fontsource-variable/nunito/files/nunito-latin-wght-normal.woff2)
+		format('woff2-variations');
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* inter-latin-wght-normal */
+@font-face {
+	font-family: 'Inter Variable';
+	font-style: normal;
+	font-display: swap;
+	font-weight: 100 900;
+	src: url(@fontsource-variable/inter/files/inter-latin-wght-normal.woff2)
+		format('woff2-variations');
+	unicode-range:
+		U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+		U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+$fontHead: 'Inter Variable', sans-serif;
+$fontAction: 'Nunito Variable', sans-serif;
+$fontBody: 'Crimson Pro Variable', Garamond, serif;
+
+$breakpoints: (
+	'phone-small': 350px,
+	'phone': 400px,
+	'phone-wide': 480px,
+	'phablet': 560px,
+	'tablet-small': 640px,
+	'tablet': 768px,
+	'tablet-med': 900px,
+	'tablet-wide': 1024px,
+	'desktop-small': 1150px,
+	'desktop': 1248px,
+	'desktop-wide': 1440px,
+	'ultra-wide': 2000px
+);
+
+$logo_font_sizes: (
+	null: calc(5rem + 0.25vw),
+	map.get($breakpoints, 'phone-wide'): calc(3.3rem + 0.25vw),
+	map.get($breakpoints, 'phablet'): calc(3rem + 0.25vw),
+	map.get($breakpoints, 'tablet'): calc(3.75rem + 0.25vw),
+	map.get($breakpoints, 'desktop'): calc(4.15rem + 0.25vw),
+	map.get($breakpoints, 'ultra-wide'): calc(4.15rem + 0.25vw)
+);
+
+$bigh_font_sizes: (
+	null: calc(2.5rem + 0.25vw),
+	map.get($breakpoints, 'phone-wide'): calc(3rem + 0.25vw),
+	map.get($breakpoints, 'phablet'): calc(3.3rem + 0.25vw),
+	map.get($breakpoints, 'tablet'): calc(3.6rem + 0.25vw),
+	map.get($breakpoints, 'desktop'): calc(4rem + 0.25vw),
+	map.get($breakpoints, 'ultra-wide'): calc(4.2rem + 0.25vw)
+);
+
+$h1_font_sizes: (
+	null: calc(1.9rem + 0.25vw),
+	map.get($breakpoints, 'phone-wide'): calc(2rem + 0.25vw),
+	map.get($breakpoints, 'phablet'): calc(2.4rem + 0.25vw),
+	map.get($breakpoints, 'tablet'): calc(2.8rem + 0.25vw),
+	map.get($breakpoints, 'desktop'): calc(3rem + 0.25vw),
+	map.get($breakpoints, 'ultra-wide'): calc(3rem + 0.25vw)
+);
+
+$hmid_font_sizes: (
+	null: calc(1.6rem + 0.2vw),
+	map.get($breakpoints, 'phone-wide'): calc(1.7rem + 0.2vw),
+	map.get($breakpoints, 'phablet'): calc(1.8rem + 0.2vw),
+	map.get($breakpoints, 'tablet'): calc(1.9rem + 0.2vw),
+	map.get($breakpoints, 'desktop'): calc(2.1rem + 0.2vw),
+	map.get($breakpoints, 'ultra-wide'): calc(2.6rem + 0.2vw)
+);
+
+$h2_font_sizes: (
+	null: calc(1.4rem + 0.2vw),
+	map.get($breakpoints, 'phone-wide'): calc(1.5rem + 0.2vw),
+	map.get($breakpoints, 'phablet'): calc(1.6rem + 0.2vw),
+	map.get($breakpoints, 'tablet'): calc(1.7rem + 0.2vw),
+	map.get($breakpoints, 'desktop'): calc(1.9rem + 0.2vw),
+	map.get($breakpoints, 'ultra-wide'): calc(2.5rem + 0.2vw)
+);
+
+$h3_font_sizes: (
+	null: calc(1.15rem + 0.15vw),
+	map.get($breakpoints, 'phablet'): calc(1.35rem + 0.15vw),
+	map.get($breakpoints, 'tablet'): calc(1.45rem + 0.15vw),
+	map.get($breakpoints, 'desktop'): calc(1.65rem + 0.15vw),
+	map.get($breakpoints, 'ultra-wide'): calc(1.75rem + 0.15vw)
+);
+// $h3_font_sizes: (
+// 	null: calc(1.3rem + 0.15vw),
+// 	map.get($breakpoints, 'phablet'): calc(1.5rem + 0.15vw),
+// 	map.get($breakpoints, 'tablet'): calc(1.6rem + 0.15vw),
+// 	map.get($breakpoints, 'desktop'): calc(1.9rem + 0.15vw),
+// 	map.get($breakpoints, 'ultra-wide'): calc(1.9rem + 0.15vw)
+// );
+
+$bigp_font_sizes: (
+	null: calc(1.05rem + 0.15vw),
+	map.get($breakpoints, 'phablet'): calc(1.3rem + 0.15vw),
+	map.get($breakpoints, 'tablet'): calc(1.4rem + 0.15vw),
+	map.get($breakpoints, 'desktop'): calc(1.6rem + 0.15vw),
+	map.get($breakpoints, 'ultra-wide'): calc(1.7rem + 0.15vw)
+);
+
+$p_font_sizes: (
+	null: calc(1rem + 0.15vw),
+	map.get($breakpoints, 'phablet'): calc(1.2rem + 0.15vw),
+	map.get($breakpoints, 'tablet'): calc(1.3rem + 0.15vw),
+	map.get($breakpoints, 'desktop'): calc(1.4rem + 0.15vw),
+	map.get($breakpoints, 'ultra-wide'): calc(1.6rem + 0.15vw)
+);
+
+$sub_font_sizes: (
+	null: calc(1rem + 0.1vw),
+	map.get($breakpoints, 'phablet'): calc(1rem + 0.1vw),
+	map.get($breakpoints, 'tablet'): calc(1rem + 0.1vw),
+	map.get($breakpoints, 'desktop'): calc(1.3rem + 0.1vw),
+	map.get($breakpoints, 'ultra-wide'): calc(1.3rem + 0.1vw)
+);
+
+$sub_sub_font_sizes: (
+	null: calc(0.9rem + 0.1vw),
+	map.get($breakpoints, 'phablet'): calc(1rem + 0.1vw),
+	map.get($breakpoints, 'tablet'): calc(1rem + 0.1vw),
+	map.get($breakpoints, 'desktop'): calc(1rem + 0.1vw),
+	map.get($breakpoints, 'ultra-wide'): calc(1.1rem + 0.1vw)
+);
