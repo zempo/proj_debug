@@ -1,5 +1,6 @@
 <script>
 	import Folder from './../lib/components/layout/Folder.svelte';
+	import '$lib/style/main.scss';
 	// import Folder from './Folder.svelte';
 
 	const fileStructure = {

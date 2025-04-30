@@ -48,7 +48,8 @@
 		b = [...preset.b];
 		c = [...preset.c];
 		d = [...preset.d];
-		handleUpdate();
+		// if (!svgElement) return;
+		updateVisualization();
 	}
 
 	// Reactive update function
@@ -94,26 +95,48 @@
 		rect.setAttribute('fill', 'url(#palette-gradient)');
 		svgElement.appendChild(rect);
 
-		// Reactive cosine graph
-		const path = document.createElementNS(svgNS, 'path');
-		path.id = 'cosine-graph';
-		let pathData = 'M 0 100 ';
+		const colors = ['#ff0000', '#00aa00', '#0000ff']; // R, G, B
+		['R', 'G', 'B'].forEach((label, i) => {
+			// Remove previous path if it exists
+			const old = svgElement.querySelector(`#cosine-graph-${label}`);
+			if (old) old.remove();
 
-		const frequency = c[0];
-		const phase = d[0];
-		const amplitude = b[0] * 30;
-		console.log('Amplitude:', amplitude);
+			const path = document.createElementNS(svgNS, 'path');
+			path.setAttribute('stroke', colors[i]);
+			path.setAttribute('fill', 'none');
+			path.setAttribute('stroke-width', '1.5');
+			path.setAttribute('id', `cosine-graph-${label}`);
+
+			let pathData = `M 0 ${75}`;
+			for (let x = 0; x <= 1; x += 0.01) {
+				const y = 100 - b[i] * 30 * Math.cos(TAU * (c[i] * x + d[i]));
+				pathData += ` L ${x * 300} ${y}`;
+			}
+
+			path.setAttribute('d', pathData);
+			svgElement.appendChild(path);
+		});
+
+		// Reactive cosine graph
+		// const path = document.createElementNS(svgNS, 'path');
+		// path.id = 'cosine-graph';
+		// let pathData = 'M 0 100 ';
+
+		// const frequency = c[0];
+		// const phase = d[0];
+		// const amplitude = b[0] * 30;
+		// console.log('Amplitude:', amplitude);
 
 		// return a + b * cos(TAU * (c * t + d));
-		for (let x = 0; x <= 1; x += 0.01) {
-			const y = 100 - amplitude * Math.cos(TAU * (frequency * x + phase));
-			pathData += `L ${x * 300} ${y} `;
-		}
+		// for (let x = 0; x <= 1; x += 0.01) {
+		// 	const y = 100 - amplitude * Math.cos(TAU * (frequency * x + phase));
+		// 	pathData += `L ${x * 300} ${y} `;
+		// }
 
-		path.setAttribute('d', pathData);
-		path.setAttribute('stroke', '#0066ff');
-		path.setAttribute('stroke-width', '2');
-		path.setAttribute('fill', 'none');
+		// path.setAttribute('d', pathData);
+		// path.setAttribute('stroke', '#0066ff');
+		// path.setAttribute('stroke-width', '2');
+		// path.setAttribute('fill', 'none');
 		svgElement.appendChild(path);
 	}
 
@@ -125,9 +148,9 @@
 		});
 	}
 
-	$effect(() => {
-		handleUpdate();
-	});
+	// $effect(() => {
+	// 	handleUpdate();
+	// });
 
 	onMount(() => {
 		updateVisualization();
@@ -141,22 +164,8 @@
 	<div class="visualization">
 		<svg bind:this={svgElement} width="100%" height="150" viewBox="0 0 300 150" />
 	</div>
-
-	<div class="export">
-		<h3>GLSL Code</h3>
-		<pre>
-float p1_example = uv.x;			
-vec3 cp1 = c_palette(
-	p1_example,
-	vec3({a.map((n) => n.toFixed(2)).join(', ')}),
-	vec3({b.map((n) => n.toFixed(2)).join(', ')}),
-	vec3({c.map((n) => n.toFixed(2)).join(', ')}),
-	vec3({d.map((n) => n.toFixed(2)).join(', ')})
-);</pre>
-	</div>
-
 	<div class="controls">
-		<select bind:value={currentPreset} onchange={() => changePreset}>
+		<select bind:value={currentPreset} onchange={changePreset}>
 			{#each Object.keys(PRESETS) as name}
 				<option value={name}>{name}</option>
 			{/each}
@@ -176,7 +185,7 @@ vec3 cp1 = c_palette(
 						oninput={(e) => {
 							a[i] = parseFloat(e.target.value);
 							a = [...a]; // Trigger reactivity
-							requestAnimationFrame(updateVisualization);
+							updateVisualization();
 						}}
 					/>
 					<span class="value">{a[i].toFixed(2)}</span>
@@ -206,7 +215,19 @@ vec3 cp1 = c_palette(
 			<h3>Vector C (Frequency)</h3>
 			{#each [0, 1, 2] as i}
 				<label>
-					C[{i}]: <input type="range" bind:value={c[i]} min={0} max={2} step={0.1} />
+					C[{i}]:
+					<input
+						type="range"
+						value={c[i]}
+						min={0}
+						max={2}
+						step={0.01}
+						oninput={(e) => {
+							c[i] = parseFloat(e.target.value);
+							c = [...c]; // Trigger reactivity
+							updateVisualization();
+						}}
+					/>
 					<span class="value">{c[i].toFixed(1)}</span>
 				</label>
 			{/each}
@@ -214,11 +235,36 @@ vec3 cp1 = c_palette(
 			<h3>Vector D (Phase)</h3>
 			{#each [0, 1, 2] as i}
 				<label>
-					D[{i}]: <input type="range" bind:value={d[i]} min={0} max={1} step={0.01} />
+					D[{i}]:
+					<input
+						type="range"
+						value={d[i]}
+						min={0}
+						max={1}
+						step={0.01}
+						oninput={(e) => {
+							d[i] = parseFloat(e.target.value);
+							d = [...d]; // Trigger reactivity
+							updateVisualization();
+						}}
+					/>
 					<span class="value">{d[i].toFixed(2)}</span>
 				</label>
 			{/each}
 		</div>
+	</div>
+
+	<div class="export">
+		<h3>GLSL Code</h3>
+		<pre>
+float p1_example = uv.x;			
+vec3 cp1 = c_palette(
+	p1_example,
+	vec3({a.map((n) => n.toFixed(2)).join(', ')}),
+	vec3({b.map((n) => n.toFixed(2)).join(', ')}),
+	vec3({c.map((n) => n.toFixed(2)).join(', ')}),
+	vec3({d.map((n) => n.toFixed(2)).join(', ')})
+);</pre>
 	</div>
 </div>
 
