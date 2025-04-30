@@ -6,5 +6,5 @@
 	const Debug = content;
 </script>
 
-<h1>{data.snip.title}</h1>
+<h1>GLSL: {data.snip.title}</h1>
 <Debug />

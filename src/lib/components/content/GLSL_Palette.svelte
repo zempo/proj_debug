@@ -1,5 +1,5 @@
 <script>
-	import { onMount, afterUpdate } from 'svelte';
+	import { onMount } from 'svelte';
 
 	// Constants matching your GLSL
 	const TAU = Math.PI * 2;
@@ -27,13 +27,12 @@
 	};
 
 	// Reactive state
-	let currentPreset = 'Rainbow';
-	let a = [0.5, 0.5, 0.5];
-	let b = [0.5, 0.5, 0.5];
-	let c = [1.0, 1.0, 1.0];
-	let d = [0.0, 0.33, 0.67];
+	let currentPreset = $state('Rainbow');
+	let a = $derived(PRESETS[currentPreset].a);
+	let b = $derived(PRESETS[currentPreset].b);
+	let c = $derived(PRESETS[currentPreset].c);
+	let d = $derived(PRESETS[currentPreset].d);
 	let svgElement;
-	let isDragging = false;
 
 	// GLSL-style palette function
 	function palette(t, a, b, c, d) {
@@ -103,7 +102,9 @@
 		const frequency = c[0];
 		const phase = d[0];
 		const amplitude = b[0] * 30;
+		console.log('Amplitude:', amplitude);
 
+		// return a + b * cos(TAU * (c * t + d));
 		for (let x = 0; x <= 1; x += 0.01) {
 			const y = 100 - amplitude * Math.cos(TAU * (frequency * x + phase));
 			pathData += `L ${x * 300} ${y} `;
@@ -124,18 +125,18 @@
 		});
 	}
 
+	$effect(() => {
+		handleUpdate();
+	});
+
 	onMount(() => {
 		updateVisualization();
 		setupSliderEvents();
 	});
-
-	afterUpdate(() => {
-		handleUpdate();
-	});
 </script>
 
 <div class="palette-debugger debug_w">
-	<h2>GLSL Palette Visualizer</h2>
+	<h2>Color Palette Visualizer</h2>
 
 	<div class="visualization">
 		<svg bind:this={svgElement} width="100%" height="150" viewBox="0 0 300 150" />
@@ -155,7 +156,7 @@ vec3 cp1 = c_palette(
 	</div>
 
 	<div class="controls">
-		<select bind:value={currentPreset} on:change={changePreset}>
+		<select bind:value={currentPreset} onchange={() => changePreset}>
 			{#each Object.keys(PRESETS) as name}
 				<option value={name}>{name}</option>
 			{/each}
@@ -165,7 +166,19 @@ vec3 cp1 = c_palette(
 			<h3>Vector A (Base)</h3>
 			{#each [0, 1, 2] as i}
 				<label>
-					A[{i}]: <input type="range" bind:value={a[i]} min={0} max={1} step={0.01} />
+					A[{i}]:
+					<input
+						type="range"
+						value={a[i]}
+						min={0}
+						max={1}
+						step={0.01}
+						oninput={(e) => {
+							a[i] = parseFloat(e.target.value);
+							a = [...a]; // Trigger reactivity
+							requestAnimationFrame(updateVisualization);
+						}}
+					/>
 					<span class="value">{a[i].toFixed(2)}</span>
 				</label>
 			{/each}
@@ -173,7 +186,19 @@ vec3 cp1 = c_palette(
 			<h3>Vector B (Amplitude)</h3>
 			{#each [0, 1, 2] as i}
 				<label>
-					B[{i}]: <input type="range" bind:value={b[i]} min={0} max={1} step={0.01} />
+					B[{i}]:
+					<input
+						type="range"
+						value={b[i]}
+						min={0}
+						max={1}
+						step={0.01}
+						oninput={(e) => {
+							b[i] = parseFloat(e.target.value);
+							b = [...b]; // Trigger reactivity
+							updateVisualization();
+						}}
+					/>
 					<span class="value">{b[i].toFixed(2)}</span>
 				</label>
 			{/each}

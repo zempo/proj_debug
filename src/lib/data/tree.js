@@ -12,7 +12,7 @@ export const pageTree = {
 	glsl: [
 		{
 			slug: 'c_palette',
-			title: 'Color Palette Generator',
+			title: 'Color Palette Visualizer',
 			content: GlslPalette
 			//
 		}
