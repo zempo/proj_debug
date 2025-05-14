@@ -148,3 +148,184 @@ $sub_sub_font_sizes: (
 	map.get($breakpoints, 'desktop'): calc(1rem + 0.1vw),
 	map.get($breakpoints, 'ultra-wide'): calc(1.1rem + 0.1vw)
 );
+
+@mixin font-size($fs-map) {
+	@each $fs-breakpoint, $fs-font-size in $fs-map {
+		@if $fs-breakpoint == null {
+			font-size: $fs-font-size;
+		} @else {
+			@media screen and (min-width: $fs-breakpoint) {
+				font-size: $fs-font-size;
+			}
+		}
+	}
+}
+// for svgs accompanying fonts
+@mixin icon-size($fs-map) {
+	@each $fs-breakpoint, $fs-font-size in $fs-map {
+		@if $fs-breakpoint == null {
+			height: $fs-font-size;
+			width: $fs-font-size;
+		} @else {
+			@media screen and (min-width: $fs-breakpoint) {
+				height: $fs-font-size;
+				width: $fs-font-size;
+			}
+		}
+	}
+}
+@mixin icon-size-logo($fs-map) {
+	@each $fs-breakpoint, $fs-font-size in $fs-map {
+		@if $fs-breakpoint == null {
+			height: $fs-font-size;
+			width: calc($fs-font-size * 3.25);
+		} @else {
+			@media screen and (min-width: $fs-breakpoint) {
+				height: $fs-font-size;
+				width: calc($fs-font-size * 3.25);
+			}
+		}
+	}
+}
+// font size multiplier
+@mixin font-size-multiplier($fs-map) {
+	@each $fs-breakpoint, $fs-font-size in $fs-map {
+		@if $fs-breakpoint == null {
+			font-size: calc($fs-font-size * var(--readSize));
+		} @else {
+			@media screen and (min-width: $fs-breakpoint) {
+				font-size: calc($fs-font-size * var(--readSize));
+			}
+		}
+	}
+}
+
+// for svgs accompanying fonts
+@mixin home-icon-size($fs-map) {
+	@each $fs-breakpoint, $fs-font-size in $fs-map {
+		@if $fs-breakpoint == null {
+			height: $fs-font-size;
+			width: calc($fs-font-size * 3.251);
+		} @else {
+			@media screen and (min-width: $fs-breakpoint) {
+				height: $fs-font-size;
+				width: calc($fs-font-size * 3.251);
+			}
+		}
+	}
+}
+
+@mixin mq($width, $type: min) {
+	@if map.has-key($breakpoints, $width) {
+		$width: map.get($breakpoints, $width);
+		@if $type == max {
+			$width: $width - 1px;
+		}
+		@media only screen and (#{$type}-width: $width) {
+			@content;
+		}
+	}
+}
+
+// ?============================================================================
+// *Families / Weight
+h1,
+h2,
+h3,
+.use_h3,
+.use_h4,
+th {
+	font-family: $fontHead;
+	color: var(--textHead);
+}
+.home_on_hero {
+	.sub_title {
+		font-family: $fontHead;
+	}
+}
+header {
+	nav a {
+		font-weight: 900;
+	}
+}
+nav {
+	a,
+	button {
+		font-family: $fontAction;
+		text-transform: uppercase;
+	}
+}
+footer {
+	nav {
+		a,
+		button {
+			font-family: $fontHead;
+			text-transform: uppercase;
+		}
+	}
+}
+p {
+	font-family: $fontBody;
+	font-weight: normal;
+}
+.skip_featured_btn {
+	font-family: $fontBody;
+	@include font-size($sub_font_sizes);
+	@include mq('phablet', 'min') {
+		@include font-size($sub_font_sizes);
+	}
+}
+.search_form {
+	input {
+		font-family: $fontAction;
+	}
+}
+
+.tsnip {
+	h3 {
+		font-family: $fontBody;
+	}
+}
+th {
+	font-family: $fontHead;
+}
+td,
+.foot_link a,
+.content_aside li,
+.tag_item .tag_btn {
+	font-family: $fontBody;
+}
+
+figcaption {
+	font-family: $fontBody;
+}
+.tabs,
+.subsec {
+	button,
+	.contact_pg_link {
+		font-family: $fontHead;
+		font-weight: bold;
+		// text-transform: uppercase;
+		@include font-size($bigp_font_sizes);
+		@include mq('phablet', 'min') {
+			@include font-size($bigp_font_sizes);
+		}
+	}
+}
+.em_text {
+	font-family: $fontHead;
+	color: var(--textHead);
+	font-weight: bold;
+}
+.app_section {
+	a {
+		font-weight: bold;
+		// font-style: italic;
+	}
+	&.bio_on_section {
+		a {
+			font-weight: bold;
+			font-style: italic;
+		}
+	}
+}

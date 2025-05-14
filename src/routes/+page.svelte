@@ -3,9 +3,9 @@
 	// import Folder from './Folder.svelte';
 </script>
 
+<nav>
+	<a href="/glsl/c_palette">c palette</a>
+</nav>
 <main>
-	<nav>
-		<a href="/glsl/c_palette">c palette</a>
-	</nav>
-	<h1>File Explorer</h1>
+	<h1>Debug</h1>
 </main>
