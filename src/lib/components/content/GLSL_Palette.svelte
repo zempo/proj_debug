@@ -23,6 +23,30 @@
 			b: [0.3, 0.3, 0.5],
 			c: [0.8, 0.8, 0.5],
 			d: [0.1, 0.3, 0.7]
+		},
+		PinkPonyClub: {
+			a: [1.0, 0.3, 0.5],
+			b: [0.3, 0.3, 0.5],
+			c: [2.0, 0.97, 0.59],
+			d: [0.1, 0.3, 0.7]
+		},
+		Black_n_White: {
+			a: [1.0, 1.0, 1.0],
+			b: [1.0, 1.0, 1.0],
+			c: [2.0, 2.0, 2.0],
+			d: [0.0, 1.0, 0.0]
+		},
+		ThreeD_Glasses: {
+			a: [1.0, 1.0, 1.0],
+			b: [1.0, 1.0, 1.0],
+			c: [2.0, 2.0, 2.0],
+			d: [0.15, 1.0, 0.0]
+		},
+		Y2K: {
+			a: [0.92, 1.0, 1.0],
+			b: [1.0, 1.0, 1.0],
+			c: [2.0, 2.0, 2.0],
+			d: [0.48, 0.7, 0.0]
 		}
 	};
 
@@ -99,44 +123,45 @@
 		['R', 'G', 'B'].forEach((label, i) => {
 			// Remove previous path if it exists
 			const old = svgElement.querySelector(`#cosine-graph-${label}`);
+			const old_mark = svgElement.querySelector(`#a-marker-${label}`);
 			if (old) old.remove();
+			if (old_mark) old_mark.remove();
 
 			const path = document.createElementNS(svgNS, 'path');
 			path.setAttribute('stroke', colors[i]);
 			path.setAttribute('fill', 'none');
-			path.setAttribute('stroke-width', '1.5');
+			path.setAttribute('stroke-width', '2');
 			path.setAttribute('id', `cosine-graph-${label}`);
 
-			let pathData = `M 0 ${75}`;
+			let w_pre = svgElement.clientWidth;
+			let w = svgElement.clientWidth;
+			let h_pre = svgElement.clientHeight;
+			let h = Math.min(h_pre / 2, 100);
+			let offset = 62.5;
+			// let pathData = `M 0 ${h + offset} `;
+			let x0 = 0;
+			let y0 = h + offset + b[i] * h * -Math.cos(TAU * (c[i] * x0 + d[i]));
+			let pathData = `M ${x0 * w} ${y0}`;
 			for (let x = 0; x <= 1; x += 0.01) {
-				const y = 100 - b[i] * 30 * Math.cos(TAU * (c[i] * x + d[i]));
-				pathData += ` L ${x * 300} ${y}`;
+				const y = h + offset + b[i] * h * -Math.cos(TAU * (c[i] * x + d[i]));
+				pathData += ` L ${x * w} ${y}`;
 			}
 
 			path.setAttribute('d', pathData);
 			svgElement.appendChild(path);
+
+			const circle = document.createElementNS(svgNS, 'circle');
+			let circ_h = 200;
+			const y = circ_h + offset - a[i] * circ_h; // same scale as graph
+			const x = 10; // left of the graph start
+			circle.setAttribute('cx', x);
+			circle.setAttribute('cy', y);
+			circle.setAttribute('r', 6); // radius 5px = 10px diameter
+			circle.setAttribute('fill', colors[i]);
+			circle.setAttribute('id', `a-marker-${label}`);
+			svgElement.appendChild(circle);
 		});
 
-		// Reactive cosine graph
-		// const path = document.createElementNS(svgNS, 'path');
-		// path.id = 'cosine-graph';
-		// let pathData = 'M 0 100 ';
-
-		// const frequency = c[0];
-		// const phase = d[0];
-		// const amplitude = b[0] * 30;
-		// console.log('Amplitude:', amplitude);
-
-		// return a + b * cos(TAU * (c * t + d));
-		// for (let x = 0; x <= 1; x += 0.01) {
-		// 	const y = 100 - amplitude * Math.cos(TAU * (frequency * x + phase));
-		// 	pathData += `L ${x * 300} ${y} `;
-		// }
-
-		// path.setAttribute('d', pathData);
-		// path.setAttribute('stroke', '#0066ff');
-		// path.setAttribute('stroke-width', '2');
-		// path.setAttribute('fill', 'none');
 		svgElement.appendChild(path);
 	}
 
@@ -162,7 +187,7 @@
 	<h2>Color Palette Visualizer</h2>
 
 	<div class="visualization">
-		<svg bind:this={svgElement} width="100%" height="150" viewBox="0 0 300 150" />
+		<svg bind:this={svgElement} width="100%" height="275" viewBox="0 0 100% 275" />
 	</div>
 	<div class="controls">
 		<select bind:value={currentPreset} onchange={changePreset}>
@@ -255,20 +280,34 @@
 	</div>
 
 	<div class="export">
-		<h3>GLSL Code</h3>
+		<h3>GLSL Output</h3>
 		<pre>
-float p1_example = uv.x;			
-vec3 cp1 = c_palette(
+// typical uv setup
+//   float zoom = 1.0;
+// vec2 uv = zoom * ((gl_FragCoord.xy - (u_resolution.xy * 0.5)) / u_resolution.y);
+float p1_example = uv.x - 0.5;			
+vec3 cp1 = pal(
 	p1_example,
 	vec3({a.map((n) => n.toFixed(2)).join(', ')}),
 	vec3({b.map((n) => n.toFixed(2)).join(', ')}),
 	vec3({c.map((n) => n.toFixed(2)).join(', ')}),
 	vec3({d.map((n) => n.toFixed(2)).join(', ')})
 );</pre>
+
+		<h3>The Function</h3>
+		<pre>
+{@html `const float PI = 3.1415926535897932384626433832795;
+const float TAU = PI * 2.;
+const float E = 2.71828182845904523536028747135266;
+// From https://iquilezles.org/
+vec3 pal( float t, vec3 a, vec3 b, vec3 c, vec3 d) {
+	return a + b * cos(TAU * (c * t + d));
+	}`}
+</pre>
 	</div>
 </div>
 
-<style>
+<style lang="scss">
 	.palette-debugger {
 		font-family: 'Inter', sans-serif;
 		padding: 1.5rem;
@@ -333,6 +372,9 @@ vec3 cp1 = c_palette(
 		padding: 1rem;
 		border-radius: 8px;
 		margin-bottom: 2rem;
+		svg {
+			width: 100%;
+		}
 	}
 
 	.export {
