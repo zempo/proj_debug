@@ -97,7 +97,7 @@ $h2_font_sizes: (
 	null: calc(1.4rem + 0.2vw),
 	map.get($breakpoints, 'phone-wide'): calc(1.5rem + 0.2vw),
 	map.get($breakpoints, 'phablet'): calc(1.6rem + 0.2vw),
-	map.get($breakpoints, 'tablet'): calc(1.7rem + 0.2vw),
+	map.get($breakpoints, 'tablet'): calc(1.9rem + 0.2vw),
 	map.get($breakpoints, 'desktop'): calc(1.9rem + 0.2vw),
 	map.get($breakpoints, 'ultra-wide'): calc(2.5rem + 0.2vw)
 );
@@ -232,6 +232,7 @@ $sub_sub_font_sizes: (
 h1,
 h2,
 h3,
+.use_h2,
 .use_h3,
 .use_h4,
 th {
@@ -327,5 +328,50 @@ figcaption {
 			font-weight: bold;
 			font-style: italic;
 		}
+	}
+}
+
+h1 {
+	@include font-size($h1_font_sizes);
+	@include mq('phablet', 'min') {
+		@include font-size($h1_font_sizes);
+	}
+}
+
+h2,
+.use_h2 {
+	@include font-size($h2_font_sizes);
+	@include mq('phablet', 'min') {
+		@include font-size($h2_font_sizes);
+	}
+}
+
+h3,
+th,
+.use_h3 {
+	@include font-size($h3_font_sizes);
+	@include mq('phablet', 'min') {
+		@include font-size($h3_font_sizes);
+	}
+}
+h4,
+.use_h4 {
+	font-weight: 550;
+	@include font-size($p_font_sizes);
+}
+
+p,
+figcaption {
+	@include font-size($bigp_font_sizes);
+	@include mq('phablet', 'min') {
+		@include font-size($p_font_sizes);
+	}
+}
+
+td,
+.footer a {
+	@include font-size($bigp_font_sizes);
+	@include mq('phablet', 'min') {
+		@include font-size($p_font_sizes);
 	}
 }
