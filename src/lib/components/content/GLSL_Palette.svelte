@@ -190,8 +190,6 @@
 </script>
 
 <div class="palette-debugger debug_w">
-	<h2>Color Palette Visualizer</h2>
-
 	<div class="visualization">
 		<svg bind:this={svgElement} width="100%" height="275" viewBox="0 0 100% 275" />
 	</div>
@@ -203,7 +201,7 @@
 		</select>
 
 		<div class="sliders">
-			<h3>Vector A (Base)</h3>
+			<h2 class="use_h3">Vector A (Base)</h2>
 			{#each [0, 1, 2] as i}
 				<label>
 					A[{i}]:
@@ -223,7 +221,7 @@
 				</label>
 			{/each}
 
-			<h3>Vector B (Amplitude)</h3>
+			<h2 class="use_h3">Vector B (Amplitude)</h2>
 			{#each [0, 1, 2] as i}
 				<label>
 					B[{i}]:
@@ -243,7 +241,7 @@
 				</label>
 			{/each}
 
-			<h3>Vector C (Frequency)</h3>
+			<h2 class="use_h3">Vector C (Frequency)</h2>
 			{#each [0, 1, 2] as i}
 				<label>
 					C[{i}]:
@@ -263,7 +261,7 @@
 				</label>
 			{/each}
 
-			<h3>Vector D (Phase)</h3>
+			<h2 class="use_h3">Vector D (Phase)</h2>
 			{#each [0, 1, 2] as i}
 				<label>
 					D[{i}]:
@@ -286,7 +284,7 @@
 	</div>
 
 	<div class="export">
-		<h3>GLSL Output</h3>
+		<h2 class="use_h3">GLSL Output</h2>
 		<pre>
 // typical uv setup
 //   float zoom = 1.0;
