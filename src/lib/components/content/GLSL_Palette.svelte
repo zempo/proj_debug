@@ -318,6 +318,7 @@ vec3 pal( float t, vec3 a, vec3 b, vec3 c, vec3 d) {
 		background: white;
 		border-radius: 12px;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		margin-top: 1rem;
 	}
 
 	h2,
