@@ -3,8 +3,29 @@
 @use './reset';
 
 html {
-	background: rgb(253, 246, 240);
+	background: rgb(243, 241, 239);
+	--bxClr1: rgba(0, 0, 0, 0.16);
+	--bxClr2: rgba(0, 0, 0, 0.24);
+	--bxClr1b: rgba(67, 65, 65, 0.16);
+	--bxClr2b: rgba(71, 69, 69, 0.24);
+	--shadowClr1: rgba(0, 0, 0, 0.576);
+	--shadowClr2: rgba(18, 17, 17, 0.905);
+	--shadowClr3: rgba(0, 0, 0, 0.12);
+	--insetShadow: inset 0 0 10px var(--shadowClr1);
+	--insetShadowb: inset 0 0 6px var(--shadowClr2);
+	--insetShadow2: inset 0 0 2px var(--shadowClr1), inset 0 0 8px var(--bxClr2b);
+	--shadow1: 0 3px 6px var(--bxClr1), 0 3px 6px var(--bxClr2);
+	--shadow2: 0 3px 6px var(--bxClr1), 0 3px 6px var(--bxClr2);
+	--shadow3: 0 1px 3px var(--bxClr1), 0 1px 3px var(--bxClr2);
+	--shadow4: 0 1px 3px var(--bxClr1), 0 1px 3px var(--bxClr2b);
+	--shadowTop: 0 -2px 2px var(--bxClr1), 0 -2px 2px var(--bxClr2);
+	--shadowBtm: 0 1px 3px var(--bxClr1), 0 2px 5px var(--bxClr2);
+	nav {
+		box-shadow: var(--shadowBtm);
+	}
 	main {
+		background: rgb(249, 245, 252);
 		padding: 1rem;
+		min-height: 100vh;
 	}
 }

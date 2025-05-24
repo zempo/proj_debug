@@ -108,6 +108,8 @@
 		width: 100%;
 		font-family: system-ui, sans-serif;
 		padding: 0.5rem;
+		box-shadow: var(--insetShadow);
+		position: relative;
 	}
 
 	.accordion-item {
