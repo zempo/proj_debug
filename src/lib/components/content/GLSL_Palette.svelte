@@ -88,6 +88,7 @@
 		updateVisualization();
 	}
 
+	let path;
 	// Enhanced visualization with reactive cosine graph
 	function updateVisualization() {
 		const svgNS = 'http://www.w3.org/2000/svg';
@@ -133,7 +134,7 @@
 			if (old) old.remove();
 			if (old_mark) old_mark.remove();
 
-			const path = document.createElementNS(svgNS, 'path');
+			path = document.createElementNS(svgNS, 'path');
 			path.setAttribute('stroke', colors[i]);
 			path.setAttribute('fill', 'none');
 			path.setAttribute('stroke-width', '2');

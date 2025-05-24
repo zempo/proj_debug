@@ -6,5 +6,5 @@
 	const Debug = content;
 </script>
 
-<h1>UI: {data.snip.title}</h1>
+<h1 class="use_h2">UI: {data.snip.title}</h1>
 <Debug />
