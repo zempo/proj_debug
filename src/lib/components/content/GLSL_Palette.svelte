@@ -320,7 +320,8 @@ vec3 pal( float t, vec3 a, vec3 b, vec3 c, vec3 d) {
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 	}
 
-	h2 {
+	h2,
+	.use_h3 {
 		color: #333;
 		margin-bottom: 1.5rem;
 		text-align: center;

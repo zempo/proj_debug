@@ -2,8 +2,10 @@
 	// import { page } from '$app/stores';
 	import { main } from '$lib/store/main.svelte';
 	import { pageTree } from '$lib/data/tree.js';
+	import Disclosure from '../content/utils/Disclosure.svelte';
 
 	let activeSection = null;
+	let isOpen = false;
 
 	// Extract top-level categories
 	const sections = Object.entries(pageTree).map(([key, items]) => ({
@@ -20,53 +22,87 @@
 	function isActive(sectionSlug, itemSlug) {
 		return main.currentPage === `/${sectionSlug}/${itemSlug}`;
 	}
+	function isActivePre(sectionSlug) {
+		return main.currentPage.includes(`/${sectionSlug}/`);
+	}
 </script>
 
-<nav class="accordion-nav" aria-label="Documentation navigation">
-	{#each sections as section}
-		<div class="accordion-item">
-			<h3 class="accordion-heading">
-				<button
-					class="accordion-trigger"
-					aria-expanded={activeSection === section.slug}
-					aria-controls={`panel-${section.slug}`}
-					on:click={() => toggleSection(section.slug)}
+{#snippet tier_2(L)}
+	<ul class="submenu_panel ${L.slug}_panel">
+		{#each L.items as item}
+			<li class="nav-subitem">
+				<a
+					href={`/${L.slug}/${item.slug}`}
+					class="nav-sublink {isActive(L.slug, item.slug) ? 'is-active' : ''}"
 				>
-					<span class="accordion-title">{section.title}</span>
-					<span class="accordion-icon" aria-hidden="true">
-						{activeSection === section.slug ? '−' : '+'}
-					</span>
-				</button>
-			</h3>
+					{item.title}
+					{#if item.content}
+						<span class="content-indicator" aria-label="(Has live demo)">★</span>
+					{/if}
+				</a>
+			</li>
+		{/each}
+	</ul>
+{/snippet}
 
-			<div
-				id={`panel-${section.slug}`}
-				class="accordion-panel"
-				role="region"
-				in:fly={{ y: -20, duration: 200 }}
-				out:fade
-			>
-				<ul class="nav-submenu">
-					{#each section.items as item}
-						<li class="nav-subitem">
-							<a
-								href={`/${section.slug}/${item.slug}`}
-								class="nav-sublink {isActive(section.slug, item.slug) ? 'is-active' : ''}"
-							>
-								{item.title}
-								{#if item.content}
-									<span class="content-indicator" aria-label="(Has live demo)">★</span>
-								{/if}
-							</a>
-						</li>
-					{/each}
-				</ul>
-			</div>
-		</div>
+{#snippet tier_1(L)}
+	<Disclosure isOpen={isActivePre(L.slug)}>
+		{#snippet accH()}<span>{L.title}</span>{/snippet}
+		{#snippet accC()}
+			{@render tier_2(L)}
+		{/snippet}
+	</Disclosure>
+{/snippet}
+
+<nav class="accordion-nav" aria-label="Documentation navigation">
+	<div class="home_link {main.currentPage === '/' ? 'is-active' : ''}">
+		<a href="/"
+			><img
+				src="https://i.imgur.com/vsfRVYe.png"
+				alt="Bug with magnifying glass"
+				class="home_img"
+			/>/</a
+		>
+	</div>
+	{#each sections as section}
+		{@render tier_1(section)}
 	{/each}
+	<!-- <button class="min_all">Hide</button> -->
 </nav>
 
-<style>
+<style lang="scss">
+	.home_link {
+		width: 100%;
+		border-bottom: 1px solid var(--border-color, #e1e1e1);
+		img {
+			// filter: invert(0);
+			filter: invert(0.3);
+		}
+		&.is-active img {
+			filter: none;
+		}
+	}
+	.home_link a {
+		margin-left: 0.5rem;
+		display: block;
+		width: 100%;
+		text-decoration: none;
+		font-size: 2.5rem;
+		padding: 0.1rem;
+	}
+	.home_img {
+		width: 2.5rem;
+		height: 2.5rem;
+		display: inline;
+		margin-right: 0.25rem;
+	}
+
+	.submenu_panel {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+
 	.accordion-nav {
 		--transition-speed: 0.2s;
 		width: 100%;
