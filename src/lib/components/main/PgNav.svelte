@@ -101,6 +101,7 @@
 		list-style-type: none;
 		padding: 0;
 		margin: 0;
+		box-shadow: var(--insetShadow2);
 	}
 
 	.accordion-nav {

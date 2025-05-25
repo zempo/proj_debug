@@ -29,7 +29,7 @@ export const pageTree = {
 		},
 		{
 			slug: 'font_debug',
-			title: 'UI Font Debug',
+			title: 'SCSS Font Debug',
 			content: UI_fontdebug
 		}
 	]

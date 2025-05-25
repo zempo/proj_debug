@@ -24,8 +24,17 @@ html {
 		box-shadow: var(--shadowBtm);
 	}
 	main {
-		background: rgb(249, 245, 252);
+		background: rgb(250, 239, 245);
 		padding: 1rem;
 		min-height: 100vh;
+		&.d3_on_main {
+			background: rgb(231, 233, 252);
+		}
+		&.glsl_on_main {
+			background: rgb(226, 247, 247);
+		}
+		&.ui_on_main {
+			background: rgb(230, 249, 229);
+		}
 	}
 }
