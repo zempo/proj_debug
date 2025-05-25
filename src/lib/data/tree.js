@@ -3,6 +3,7 @@
 import D3_Chart from '$lib/components/content/D3_Chart.svelte';
 import GlslPalette from '$lib/components/content/GLSL_Palette.svelte';
 import UI_fontdebug from '$lib/components/content/UI_fontdebug.svelte';
+import UI_pagination from '$lib/components/content/UI_pagination.svelte';
 import UI_tree_gen from '$lib/components/content/UI_tree_gen.svelte';
 
 export const pageTree = {
@@ -23,14 +24,19 @@ export const pageTree = {
 	],
 	ui: [
 		{
-			slug: 'file_tree',
-			title: 'File Tree Maker',
-			content: UI_tree_gen
-		},
-		{
 			slug: 'font_debug',
 			title: 'SCSS Font Debug',
 			content: UI_fontdebug
+		},
+		{
+			slug: 'pagination',
+			title: 'Pagination ($bindable)',
+			content: UI_pagination
+		},
+		{
+			slug: 'tree_gen',
+			title: 'File Tree Maker',
+			content: UI_tree_gen
 		}
 	]
 };
